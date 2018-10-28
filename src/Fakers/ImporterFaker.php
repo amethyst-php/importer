@@ -19,6 +19,12 @@ class ImporterFaker extends Faker
         $bag->set('name', $faker->name);
         $bag->set('description', $faker->text);
         $bag->set('data_builder', DataBuilderFaker::make()->parameters()->toArray());
+        $bag->set('data', [
+            'x' => '{{ record.x }}',
+        ]);
+        $bag->set('keys', [
+            'primary' => ['x'],
+        ]);
 
         return $bag;
     }

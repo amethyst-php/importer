@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Railken\Amethyst\Common\ConfigurableModel;
 use Railken\Lem\Contracts\EntityContract;
 
+/**
+ * @property DataBuilder $data_builder
+ * @property object      $data
+ */
 class Importer extends Model implements EntityContract
 {
     use SoftDeletes, ConfigurableModel;
