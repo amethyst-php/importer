@@ -2,6 +2,7 @@
 
 namespace Railken\Amethyst\Schemas;
 
+use Railken\Amethyst\Managers\DataBuilderManager;
 use Railken\Lem\Attributes;
 use Railken\Lem\Schema;
 
@@ -20,6 +21,9 @@ class ImporterSchema extends Schema
                 ->setRequired(true)
                 ->setUnique(true),
             Attributes\LongTextAttribute::make('description'),
+            Attributes\BelongsToAttribute::make('data_builder_id')
+                ->setRelationName('data_builder')
+                ->setRelationManager(DataBuilderManager::class),
             Attributes\CreatedAtAttribute::make(),
             Attributes\UpdatedAtAttribute::make(),
             Attributes\DeletedAtAttribute::make(),
