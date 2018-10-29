@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Railken\\Amethyst\\Providers\\ProjectNameServiceProvider"
+                "Railken\\Amethyst\\Providers\\ImporterServiceProvider"
             ]
         }
     }
