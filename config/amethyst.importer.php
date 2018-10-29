@@ -19,8 +19,8 @@ return [
             'serializer' => Railken\Amethyst\Serializers\ImporterSerializer::class,
             'validator'  => Railken\Amethyst\Validators\ImporterValidator::class,
             'authorizer' => Railken\Amethyst\Authorizers\ImporterAuthorizer::class,
-            'faker'      => Railken\Amethyst\Authorizers\ImporterFaker::class,
-            'manager'    => Railken\Amethyst\Authorizers\ImporterManager::class,
+            'faker'      => Railken\Amethyst\Fakers\ImporterFaker::class,
+            'manager'    => Railken\Amethyst\Managers\ImporterManager::class,
         ],
     ],
 
