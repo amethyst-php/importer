@@ -4,14 +4,12 @@ namespace Railken\Amethyst\Tests\Http\Admin;
 
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
-
 use Railken\Amethyst\Api\Support\Testing\TestableBaseTrait;
-use Railken\Amethyst\Fakers\ImporterFaker;
-use Railken\Amethyst\Tests\BaseTest;
 use Railken\Amethyst\Fakers\DataBuilderFaker;
+use Railken\Amethyst\Fakers\ImporterFaker;
 use Railken\Amethyst\Managers\DataBuilderManager;
-use Railken\Amethyst\Managers\FileManager;
 use Railken\Amethyst\Managers\ImporterManager;
+use Railken\Amethyst\Tests\BaseTest;
 use Railken\Amethyst\Tests\DataBuilders\UserDataBuilder;
 
 class ImporterTest extends BaseTest
@@ -53,8 +51,7 @@ class ImporterTest extends BaseTest
 
         $writer->close();
 
-
-        $response = $this->callAndTest('POST', route('admin.file.create'), ['file' => base64_encode(file_get_contents($path))], 201);
+        $response = $this->call('POST', route('admin.file.create'), [], [], [], [], file_get_contents($path));
         $content = json_decode($response->getContent());
         $file = $content->data;
 
@@ -82,8 +79,8 @@ class ImporterTest extends BaseTest
                 'password' => '{{ record.password }}',
             ])
         )->getResource();
-        
-        $response = $this->callAndTest('POST', route('admin.importer.import', ['importer_id' => $importer->id]), ['file_id' => $file->id], 200);
+
+        $response = $this->callAndTest('POST', route('admin.importer.import', ['importer_id' => $importer->id]), ['file_id' => $file->id, 'type' => 'xlsx'], 200);
     }
 
     /**
@@ -93,7 +90,7 @@ class ImporterTest extends BaseTest
      */
     public function getTempFile(string $filename): string
     {
-        $dir = __DIR__.'/../../var/cache';
+        $dir = __DIR__.'/../../../var/cache';
 
         if (!file_exists($dir)) {
             mkdir($dir, 0755, true);

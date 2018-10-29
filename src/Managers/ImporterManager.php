@@ -25,26 +25,25 @@ class ImporterManager extends Manager
      *
      * @param Importer $importer
      * @param File     $file
+     * @param string   $type
      *
      * @return Result
      */
-    public function import(Importer $importer, File $file)
+    public function import(Importer $importer, File $file, string $type)
     {
         $result = new Result();
 
-        $mimeType = $file->getMedia()[0]->mime_type;
-
         $classes = [
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => ImportXlsxFile::class,
-            'text/csv'                                                          => ImportCsvFile::class,
+            'xlsx'                                                         => ImportXlsxFile::class,
+            'csv'                                                          => ImportCsvFile::class,
         ];
 
-        if (!isset($classes[$mimeType])) {
-            $result->addErrors(Collection::make(new \Exception('Invalid MimeType')));
+        if (!isset($classes[$type])) {
+            $result->addErrors(Collection::make([new \Exception('Invalid MimeType')]));
         }
 
         if ($result->ok()) {
-            $className = $classes[$mimeType];
+            $className = $classes[$type];
             dispatch(new $className($importer, $file, $this->getAgent()));
         }
 

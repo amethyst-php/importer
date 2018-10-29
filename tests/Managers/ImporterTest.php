@@ -74,7 +74,7 @@ class ImporterTest extends BaseTest
             ])
         )->getResource();
 
-        $result = $this->getManager()->import($importer, $result->getResource());
+        $result = $this->getManager()->import($importer, $result->getResource(), 'xlsx');
 
         $this->assertTrue($result->ok());
     }

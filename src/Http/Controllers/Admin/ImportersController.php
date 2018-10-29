@@ -2,11 +2,11 @@
 
 namespace Railken\Amethyst\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use Railken\Amethyst\Api\Http\Controllers\RestManagerController;
 use Railken\Amethyst\Api\Http\Controllers\Traits as RestTraits;
-use Railken\Amethyst\Managers\ImporterManager;
 use Railken\Amethyst\Managers\FileManager;
-use Illuminate\Http\Request;
+use Railken\Amethyst\Managers\ImporterManager;
 
 class ImportersController extends RestManagerController
 {
@@ -24,7 +24,7 @@ class ImportersController extends RestManagerController
     public $class = ImporterManager::class;
 
     /**
-     * Import a file
+     * Import a file.
      *
      * @param int $importerId
      *
@@ -45,7 +45,7 @@ class ImportersController extends RestManagerController
             abort(404);
         }
 
-        $result = $this->getManager()->import($importer, $file);
+        $result = $this->getManager()->import($importer, $file, $request->input('type'));
 
         return $result->ok() ? $this->success() : $this->error();
     }
