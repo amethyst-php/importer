@@ -4,6 +4,7 @@ namespace Railken\Amethyst\Tests\Http\Admin;
 
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
+use Illuminate\Http\UploadedFile;
 use Railken\Amethyst\Api\Support\Testing\TestableBaseTrait;
 use Railken\Amethyst\Fakers\DataBuilderFaker;
 use Railken\Amethyst\Fakers\ImporterFaker;
@@ -11,6 +12,7 @@ use Railken\Amethyst\Managers\DataBuilderManager;
 use Railken\Amethyst\Managers\ImporterManager;
 use Railken\Amethyst\Tests\BaseTest;
 use Railken\Amethyst\Tests\DataBuilders\UserDataBuilder;
+use Symfony\Component\Yaml\Yaml;
 
 class ImporterTest extends BaseTest
 {
@@ -37,7 +39,7 @@ class ImporterTest extends BaseTest
      */
     protected $route = 'admin.importer';
 
-    public function testImportXlsx()
+    public function testHttpImportXlsx()
     {
         $path = $this->getTempFile('file.xlsx');
 
@@ -51,20 +53,23 @@ class ImporterTest extends BaseTest
 
         $writer->close();
 
-        $response = $this->call('POST', route('admin.file.create'), [], [], [], [], file_get_contents($path));
+        $response = $this->callAndTest('POST', route('admin.file.create'), [], 201);
         $content = json_decode($response->getContent());
         $file = $content->data;
+        $response = $this->call('POST', route('admin.file.upload', [$file->id]), [
+            'file' => new UploadedFile($path, 'text.xlsx', null, null, null, true),
+        ]);
 
         $dbm = new DataBuilderManager();
         $dataBuilder = $dbm->createOrFail(DataBuilderFaker::make()->parameters()
             ->set('name', 'User By Id')
             ->set('class_name', UserDataBuilder::class)
-            ->set('input', [
+            ->set('input', Yaml::dump([
                 'id' => [
                     'type'       => 'integer',
                     'validation' => 'integer',
                 ],
-            ])
+            ]))
             ->set('filter', 'id eq "{{ id }}"')
         )->getResource();
 
@@ -72,12 +77,12 @@ class ImporterTest extends BaseTest
         $importer = $im->create(ImporterFaker::make()->parameters()
             ->remove('data_builder')
             ->set('data_builder_id', $dataBuilder->id)
-            ->set('data', [
+            ->set('data', Yaml::dump([
                 'id'       => '{{ record.id }}',
                 'name'     => '{{ record.name }}',
                 'email'    => '{{ record.email }}',
                 'password' => '{{ record.password }}',
-            ])
+            ]))
         )->getResource();
 
         $response = $this->callAndTest('POST', route('admin.importer.import', ['importer_id' => $importer->id]), ['file_id' => $file->id, 'type' => 'xlsx'], 200);

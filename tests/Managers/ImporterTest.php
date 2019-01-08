@@ -12,6 +12,7 @@ use Railken\Amethyst\Managers\ImporterManager;
 use Railken\Amethyst\Tests\BaseTest;
 use Railken\Amethyst\Tests\DataBuilders\UserDataBuilder;
 use Railken\Lem\Support\Testing\TestableBaseTrait;
+use Symfony\Component\Yaml\Yaml;
 
 class ImporterTest extends BaseTest
 {
@@ -46,7 +47,8 @@ class ImporterTest extends BaseTest
         $writer->close();
 
         $fm = new FileManager();
-        $result = $fm->uploadFileByContent(file_get_contents($path));
+        $file = $fm->create([])->getResource();
+        $result = $fm->uploadFileByContent($file, file_get_contents($path));
 
         $this->assertTrue($result->ok());
 
@@ -54,27 +56,27 @@ class ImporterTest extends BaseTest
         $dataBuilder = $dbm->createOrFail(DataBuilderFaker::make()->parameters()
             ->set('name', 'User By Id')
             ->set('class_name', UserDataBuilder::class)
-            ->set('input', [
+            ->set('input', Yaml::dump([
                 'id' => [
                     'type'       => 'integer',
                     'validation' => 'integer',
                 ],
-            ])
+            ]))
             ->set('filter', 'id eq "{{ id }}"')
         )->getResource();
 
         $importer = $this->getManager()->create(ImporterFaker::make()->parameters()
             ->remove('data_builder')
             ->set('data_builder_id', $dataBuilder->id)
-            ->set('data', [
+            ->set('data', Yaml::dump([
                 'id'       => '{{ record.id }}',
                 'name'     => '{{ record.name }}',
                 'email'    => '{{ record.email }}',
                 'password' => '{{ record.password }}',
-            ])
+            ]))
         )->getResource();
 
-        $result = $this->getManager()->import($importer, $result->getResource(), 'xlsx');
+        $result = $this->getManager()->import($importer, $file, 'xlsx');
 
         $this->assertTrue($result->ok());
     }

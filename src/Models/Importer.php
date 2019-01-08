@@ -9,7 +9,7 @@ use Railken\Lem\Contracts\EntityContract;
 
 /**
  * @property DataBuilder $data_builder
- * @property object      $data
+ * @property string      $data
  */
 class Importer extends Model implements EntityContract
 {

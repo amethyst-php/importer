@@ -13,6 +13,7 @@ use Railken\Amethyst\Models\File;
 use Railken\Amethyst\Models\Importer;
 use Railken\Lem\Contracts\AgentContract;
 use Railken\Template\Generators;
+use Symfony\Component\Yaml\Yaml;
 
 abstract class ImportCommonFile implements ShouldQueue
 {
@@ -63,7 +64,7 @@ abstract class ImportCommonFile implements ShouldQueue
 
                 $manager = $importer->data_builder->newInstanceData()->getManager();
 
-                $data = json_decode($generator->generateAndRender((string) json_encode($importer->data), ['record' => $row]), true);
+                $data = Yaml::parse($generator->generateAndRender($importer->data, ['record' => $row]));
 
                 if ($data === null) {
                     throw new Exceptions\ImportFormattingException(sprintf('Error while formatting row #%s', $index));
