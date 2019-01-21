@@ -34,8 +34,8 @@ class ImporterManager extends Manager
         $result = new Result();
 
         $classes = [
-            'xlsx'                                                         => ImportXlsxFile::class,
-            'csv'                                                          => ImportCsvFile::class,
+            'xlsx' => ImportXlsxFile::class,
+            'csv'  => ImportCsvFile::class,
         ];
 
         if (!isset($classes[$type])) {

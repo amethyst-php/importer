@@ -35,11 +35,11 @@ return [
     'http' => [
         'admin' => [
             'importer' => [
-                'enabled'     => true,
-                'controller'  => Railken\Amethyst\Http\Controllers\Admin\ImportersController::class,
-                'router'      => [
-                    'as'        => 'importer.',
-                    'prefix'    => '/importers',
+                'enabled'    => true,
+                'controller' => Railken\Amethyst\Http\Controllers\Admin\ImportersController::class,
+                'router'     => [
+                    'as'     => 'importer.',
+                    'prefix' => '/importers',
                 ],
             ],
         ],
