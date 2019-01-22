@@ -88,17 +88,19 @@ abstract class ImportCommonFile implements ShouldQueue
 
                 foreach ($results as $result) {
                     if (!$result->ok()) {
-                        throw new Exceptions\ImportFailedException("Row(#" .$index."): ".$result->getError(0)->getMessage());
+                        throw new Exceptions\ImportFailedException('Row(#'.$index.'): '.$result->getError(0)->getMessage());
                     }
                 }
             });
         } catch (Exceptions\ImportFormattingException | \PDOException | \Railken\SQ\Exceptions\QuerySyntaxException | Exceptions\ImportFailedException $e) {
             unlink($filePath);
+
             return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         } catch (\Twig_Error $e) {
             $e = new \Exception($e->getRawMessage().' on line '.$e->getTemplateLine());
 
             unlink($filePath);
+
             return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         }
 
