@@ -53,18 +53,24 @@ abstract class ImportCommonFile implements ShouldQueue
      */
     public function handle()
     {
-        $reader = $this->getReader($this->file->getMedia()[0]->getPath());
+        $filePath = tempnam(sys_get_temp_dir(), 'amethyst');
+        file_put_contents($filePath, file_get_contents($this->file->downloadable()));
+
+        $reader = $this->getReader($filePath);
 
         $generator = new Generators\TextGenerator();
+
+        $genFile = $generator->generateViewFile($this->importer->data);
+
         $importer = $this->importer;
 
         try {
-            $this->read($reader, function ($index, $row) use ($generator, $importer) {
+            $this->read($reader, function ($index, $row) use ($generator, $genFile, $importer) {
                 $results = Collection::make();
 
                 $manager = $importer->data_builder->newInstanceData()->getManager();
 
-                $data = Yaml::parse($generator->generateAndRender($importer->data, ['record' => $row]));
+                $data = Yaml::parse($generator->render($genFile, ['record' => $row]));
 
                 if ($data === null) {
                     throw new Exceptions\ImportFormattingException(sprintf('Error while formatting row #%s', $index));
@@ -82,18 +88,21 @@ abstract class ImportCommonFile implements ShouldQueue
 
                 foreach ($results as $result) {
                     if (!$result->ok()) {
-                        throw new Exceptions\ImportFailedException($result->getError(0)->getMessage());
+                        throw new Exceptions\ImportFailedException("Row(#" .$index."): ".$result->getError(0)->getMessage());
                     }
                 }
             });
         } catch (Exceptions\ImportFormattingException | \PDOException | \Railken\SQ\Exceptions\QuerySyntaxException | Exceptions\ImportFailedException $e) {
+            unlink($filePath);
             return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         } catch (\Twig_Error $e) {
             $e = new \Exception($e->getRawMessage().' on line '.$e->getTemplateLine());
 
+            unlink($filePath);
             return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         }
 
+        unlink($filePath);
         event(new \Railken\Amethyst\Events\ImportSucceeded($importer, $this->agent));
     }
 }
