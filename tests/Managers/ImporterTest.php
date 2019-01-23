@@ -53,27 +53,29 @@ class ImporterTest extends BaseTest
         $this->assertTrue($result->ok());
 
         $dbm = new DataBuilderManager();
-        $dataBuilder = $dbm->createOrFail(DataBuilderFaker::make()->parameters()
-            ->set('name', 'User By Id')
-            ->set('class_name', UserDataBuilder::class)
-            ->set('input', Yaml::dump([
-                'id' => [
-                    'type'       => 'integer',
-                    'validation' => 'integer',
-                ],
-            ]))
-            ->set('filter', 'id eq "{{ id }}"')
+        $dataBuilder = $dbm->createOrFail(
+            DataBuilderFaker::make()->parameters()
+                ->set('name', 'User By Id')
+                ->set('class_name', UserDataBuilder::class)
+                ->set('input', Yaml::dump([
+                    'id' => [
+                        'type'       => 'integer',
+                        'validation' => 'integer',
+                    ],
+                ]))
+                ->set('filter', 'id eq "{{ id }}"')
         )->getResource();
 
-        $importer = $this->getManager()->create(ImporterFaker::make()->parameters()
-            ->remove('data_builder')
-            ->set('data_builder_id', $dataBuilder->id)
-            ->set('data', Yaml::dump([
-                'id'       => '{{ record.id }}',
-                'name'     => '{{ record.name }}',
-                'email'    => '{{ record.email }}',
-                'password' => '{{ record.password }}',
-            ]))
+        $importer = $this->getManager()->create(
+            ImporterFaker::make()->parameters()
+                ->remove('data_builder')
+                ->set('data_builder_id', $dataBuilder->id)
+                ->set('data', Yaml::dump([
+                    'id'       => '{{ record.id }}',
+                    'name'     => '{{ record.name }}',
+                    'email'    => '{{ record.email }}',
+                    'password' => '{{ record.password }}',
+                ]))
         )->getResource();
 
         $result = $this->getManager()->import($importer, $file, 'xlsx');

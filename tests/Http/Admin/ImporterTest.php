@@ -61,28 +61,30 @@ class ImporterTest extends BaseTest
         ]);
 
         $dbm = new DataBuilderManager();
-        $dataBuilder = $dbm->createOrFail(DataBuilderFaker::make()->parameters()
-            ->set('name', 'User By Id')
-            ->set('class_name', UserDataBuilder::class)
-            ->set('input', Yaml::dump([
-                'id' => [
-                    'type'       => 'integer',
-                    'validation' => 'integer',
-                ],
-            ]))
-            ->set('filter', 'id eq "{{ id }}"')
+        $dataBuilder = $dbm->createOrFail(
+            DataBuilderFaker::make()->parameters()
+                ->set('name', 'User By Id')
+                ->set('class_name', UserDataBuilder::class)
+                ->set('input', Yaml::dump([
+                    'id' => [
+                        'type'       => 'integer',
+                        'validation' => 'integer',
+                    ],
+                ]))
+                ->set('filter', 'id eq "{{ id }}"')
         )->getResource();
 
         $im = new ImporterManager();
-        $importer = $im->create(ImporterFaker::make()->parameters()
-            ->remove('data_builder')
-            ->set('data_builder_id', $dataBuilder->id)
-            ->set('data', Yaml::dump([
-                'id'       => '{{ record.id }}',
-                'name'     => '{{ record.name }}',
-                'email'    => '{{ record.email }}',
-                'password' => '{{ record.password }}',
-            ]))
+        $importer = $im->create(
+            ImporterFaker::make()->parameters()
+                ->remove('data_builder')
+                ->set('data_builder_id', $dataBuilder->id)
+                ->set('data', Yaml::dump([
+                    'id'       => '{{ record.id }}',
+                    'name'     => '{{ record.name }}',
+                    'email'    => '{{ record.email }}',
+                    'password' => '{{ record.password }}',
+                ]))
         )->getResource();
 
         $response = $this->callAndTest('POST', route('admin.importer.import', ['importer_id' => $importer->id]), ['file_id' => $file->id, 'type' => 'xlsx'], 200);
