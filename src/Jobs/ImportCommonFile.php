@@ -14,6 +14,7 @@ use Railken\Amethyst\Models\Importer;
 use Railken\Lem\Contracts\AgentContract;
 use Railken\Template\Generators;
 use Symfony\Component\Yaml\Yaml;
+use Closure;
 
 abstract class ImportCommonFile implements ShouldQueue
 {
@@ -107,4 +108,21 @@ abstract class ImportCommonFile implements ShouldQueue
         unlink($filePath);
         event(new \Railken\Amethyst\Events\ImportSucceeded($importer, $this->agent));
     }
+
+    /**
+     * Retrieve a generic reader.
+     *
+     * @param string $filePath
+     *
+     * @return mixed
+     */
+    abstract public function getReader(string $filePath);
+    
+    /**
+     * Read.
+     *
+     * @param mixed   $reader
+     * @param Closure $callback
+     */
+    abstract public function read($reader, Closure $callback);
 }
