@@ -2,6 +2,7 @@
 
 namespace Railken\Amethyst\Jobs;
 
+use Closure;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,7 +15,6 @@ use Railken\Amethyst\Models\Importer;
 use Railken\Lem\Contracts\AgentContract;
 use Railken\Template\Generators;
 use Symfony\Component\Yaml\Yaml;
-use Closure;
 
 abstract class ImportCommonFile implements ShouldQueue
 {
@@ -117,7 +117,7 @@ abstract class ImportCommonFile implements ShouldQueue
      * @return mixed
      */
     abstract public function getReader(string $filePath);
-    
+
     /**
      * Read.
      *
