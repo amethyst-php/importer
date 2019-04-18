@@ -9,6 +9,7 @@ use Railken\Amethyst\Fakers\ImporterFaker;
 use Railken\Amethyst\Managers\DataBuilderManager;
 use Railken\Amethyst\Managers\FileManager;
 use Railken\Amethyst\Managers\ImporterManager;
+use Railken\Amethyst\Models\User;
 use Railken\Amethyst\Tests\BaseTest;
 use Railken\Amethyst\Tests\DataBuilders\UserDataBuilder;
 use Railken\Lem\Support\Testing\TestableBaseTrait;
@@ -36,16 +37,49 @@ class ImporterTest extends BaseTest
     {
         $path = $this->getTempFile('file.xlsx');
 
+        $data = $this->getData();
+
         $writer = WriterFactory::create(Type::XLSX);
         $writer->openToFile($path);
-        $writer->addRows([
-            ['id', 'name', 'email', 'password'],
-            [1, 'test-1', 'test-1@test.net', 'password'],
-            [2, 'test-2', 'test-2@test.net', 'password'],
-        ]);
 
+        $writer->addRows([array_keys($data[0])]);
+        $writer->addRows($data);
         $writer->close();
 
+        $this->commonImport($path, $data, 'xlsx');
+    }
+
+    public function testImportJson()
+    {
+        $path = $this->getTempFile('file.json');
+
+        $data = $this->getData();
+
+        file_put_contents($path, json_encode($data));
+
+        $this->commonImport($path, $data, 'json');
+    }
+
+    public function getData()
+    {
+        return [
+            [
+                'id'       => 1,
+                'name'     => str_random(40),
+                'email'    => 'test-1@test.net',
+                'password' => 'password',
+            ],
+            [
+                'id'       => 2,
+                'name'     => str_random(40),
+                'email'    => 'test-2@test.net',
+                'password' => 'password',
+            ],
+        ];
+    }
+
+    public function commonImport($path, $data, $type)
+    {
         $fm = new FileManager();
         $file = $fm->create([])->getResource();
         $result = $fm->uploadFileByContent($file, file_get_contents($path));
@@ -78,9 +112,12 @@ class ImporterTest extends BaseTest
                 ]))
         )->getResource();
 
-        $result = $this->getManager()->import($importer, $file, 'xlsx');
+        $result = $this->getManager()->import($importer, $file, $type);
 
         $this->assertTrue($result->ok());
+        foreach ($data as $row) {
+            $this->assertEquals($row['name'], User::find($row['id'])->name);
+        }
     }
 
     /**

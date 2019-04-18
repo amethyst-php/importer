@@ -10,7 +10,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Railken\Amethyst\Exceptions;
-use Railken\Amethyst\Models\File;
 use Railken\Amethyst\Models\Importer;
 use Railken\Lem\Contracts\AgentContract;
 use Railken\Template\Generators;
@@ -26,9 +25,9 @@ abstract class ImportCommonFile implements ShouldQueue
     protected $importer;
 
     /**
-     * @var \Railken\Amethyst\Models\File
+     * @var string
      */
-    protected $file;
+    protected $filePath;
 
     /**
      * @var \Railken\Lem\Contracts\AgentContract|null
@@ -39,13 +38,13 @@ abstract class ImportCommonFile implements ShouldQueue
      * Create a new job instance.
      *
      * @param \Railken\Amethyst\Models\Importer    $importer
-     * @param \Railken\Amethyst\Models\File        $file
+     * @param string                               $filePath
      * @param \Railken\Lem\Contracts\AgentContract $agent
      */
-    public function __construct(Importer $importer, File $file, AgentContract $agent = null)
+    public function __construct(Importer $importer, string $filePath, AgentContract $agent = null)
     {
         $this->importer = $importer;
-        $this->file = $file;
+        $this->filePath = $filePath;
         $this->agent = $agent;
     }
 
@@ -54,10 +53,7 @@ abstract class ImportCommonFile implements ShouldQueue
      */
     public function handle()
     {
-        $filePath = tempnam(sys_get_temp_dir(), 'amethyst');
-        file_put_contents($filePath, file_get_contents($this->file->downloadable()));
-
-        $reader = $this->getReader($filePath);
+        $reader = $this->getReader($this->filePath);
 
         $generator = new Generators\TextGenerator();
 
@@ -66,7 +62,7 @@ abstract class ImportCommonFile implements ShouldQueue
         $importer = $this->importer;
 
         try {
-            $this->read($reader, function ($index, $row) use ($generator, $genFile, $importer) {
+            $this->read($reader, function ($row, $index) use ($generator, $genFile, $importer) {
                 $results = Collection::make();
 
                 $manager = $importer->data_builder->newInstanceData()->getManager();
@@ -94,18 +90,18 @@ abstract class ImportCommonFile implements ShouldQueue
                 }
             });
         } catch (Exceptions\ImportFormattingException | \PDOException | \Railken\SQ\Exceptions\QuerySyntaxException | Exceptions\ImportFailedException $e) {
-            unlink($filePath);
+            unlink($this->filePath);
 
             return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         } catch (\Twig_Error $e) {
             $e = new \Exception($e->getRawMessage().' on line '.$e->getTemplateLine());
 
-            unlink($filePath);
+            unlink($this->filePath);
 
             return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         }
 
-        unlink($filePath);
+        unlink($this->filePath);
         event(new \Railken\Amethyst\Events\ImportSucceeded($importer, $this->agent));
     }
 

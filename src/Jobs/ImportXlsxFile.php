@@ -42,7 +42,7 @@ class ImportXlsxFile extends ImportCommonFile implements ShouldQueue
                     continue;
                 }
 
-                $callback($rowIndex, array_combine($head, $row));
+                $callback(array_combine($head, $row), $rowIndex);
             }
         }
     }
