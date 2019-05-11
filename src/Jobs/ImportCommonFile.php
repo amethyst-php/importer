@@ -17,7 +17,10 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class ImportCommonFile implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var \Railken\Amethyst\Models\Importer
