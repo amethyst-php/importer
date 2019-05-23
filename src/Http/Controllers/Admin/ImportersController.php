@@ -26,13 +26,13 @@ class ImportersController extends RestManagerController
     /**
      * Import a file.
      *
-     * @param int $importerId
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function import(int $importerId, Request $request)
+    public function execute(int $id, Request $request)
     {
-        $importer = $this->getManager()->getRepository()->findOneById($importerId);
+        $importer = $this->getManager()->getRepository()->findOneById($id);
 
         if (!$importer) {
             abort(404);

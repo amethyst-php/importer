@@ -29,7 +29,7 @@ class ImporterServiceProvider extends CommonServiceProvider
         if (Arr::get($config, 'enabled')) {
             Router::group('admin', Arr::get($config, 'router'), function ($router) use ($config) {
                 $controller = Arr::get($config, 'controller');
-                $router->post('/{importer_id}/import', ['as' => 'import', 'uses' => $controller.'@import']);
+                $router->post('/{id}/execute', ['as' => 'execute', 'uses' => $controller.'@execute']);
             });
         }
     }
