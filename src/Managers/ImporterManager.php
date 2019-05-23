@@ -69,7 +69,7 @@ class ImporterManager extends Manager
 
         return $result;
     }
-    
+
     /**
      * Describe extra actions.
      *
@@ -79,7 +79,7 @@ class ImporterManager extends Manager
     {
         return [
             'actions' => [
-                'executor',
+                'importer',
             ],
         ];
     }
