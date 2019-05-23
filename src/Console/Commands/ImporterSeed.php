@@ -3,11 +3,10 @@
 namespace Railken\Amethyst\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Railken\Amethyst\Managers\DataBuilderManager;
 use Railken\Amethyst\Managers\ImporterManager;
 use Symfony\Component\Yaml\Yaml;
-use Railken\Amethyst\DataBuilders\CommonDataBuilder;
-use Illuminate\Support\Arr;
 
 class ImporterSeed extends Command
 {
@@ -33,22 +32,20 @@ class ImporterSeed extends Command
         });
 
         foreach ($managers as $classManager) {
-
             $dataBuilderRecord = $dataBuilderManager->getRepository()->findOneBy([
-                'name'        => (new $classManager())->getName().' by id',
+                'name' => (new $classManager())->getName().' by id',
             ]);
 
             $dataBuilder = $dataBuilderRecord->newInstanceData();
 
             $importerManager->updateOrCreateOrFail([
-                'name'            => (new $classManager())->getName().' by id',
+                'name' => (new $classManager())->getName().' by id',
             ], [
                 'data_builder_id' => $dataBuilderRecord->id,
                 'data'            => Yaml::dump($dataBuilder->getManager()->getAttributes()->mapWithKeys(function ($attribute) use ($dataBuilder) {
                     return [$attribute->getName() => '{{ record.'.$attribute->getName().' }}'];
                 })->toArray()),
             ]);
-
         }
     }
 }
