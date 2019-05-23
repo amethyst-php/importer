@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Railken\Amethyst\Api\Support\Router;
 use Railken\Amethyst\Common\CommonServiceProvider;
+use Railken\Amethyst\Console\Commands\ImporterSeed;
 
 class ImporterServiceProvider extends CommonServiceProvider
 {
@@ -15,6 +16,7 @@ class ImporterServiceProvider extends CommonServiceProvider
     public function register()
     {
         parent::register();
+        $this->commands([ImporterSeed::class]);
         $this->loadExtraRoutes();
         $this->app->register(\Railken\Amethyst\Providers\DataBuilderServiceProvider::class);
         $this->app->register(\Railken\Amethyst\Providers\FileServiceProvider::class);
