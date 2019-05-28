@@ -72,6 +72,10 @@ abstract class ImportCommonFile implements ShouldQueue
 
                 $data = Yaml::parse($generator->render($genFile, ['record' => $row]));
 
+                $data = collect($data)->map(function ($r) {
+                    return $r === '' ? null : $r;
+                })->toArray();
+
                 if ($data === null) {
                     throw new Exceptions\ImportFormattingException(sprintf('Error while formatting row #%s', $index));
                 }
