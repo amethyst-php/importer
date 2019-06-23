@@ -11,7 +11,6 @@ use Railken\Amethyst\Managers\FileManager;
 use Railken\Amethyst\Managers\ImporterManager;
 use Railken\Amethyst\Models\User;
 use Railken\Amethyst\Tests\BaseTest;
-use Railken\Amethyst\Tests\DataBuilders\UserDataBuilder;
 use Railken\Lem\Support\Testing\TestableBaseTrait;
 use Symfony\Component\Yaml\Yaml;
 
