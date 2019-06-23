@@ -11,7 +11,6 @@ use Railken\Amethyst\Fakers\ImporterFaker;
 use Railken\Amethyst\Managers\DataBuilderManager;
 use Railken\Amethyst\Managers\ImporterManager;
 use Railken\Amethyst\Tests\BaseTest;
-use Railken\Amethyst\Tests\DataBuilders\UserDataBuilder;
 use Symfony\Component\Yaml\Yaml;
 
 class ImporterTest extends BaseTest
@@ -64,7 +63,8 @@ class ImporterTest extends BaseTest
         $dataBuilder = $dbm->createOrFail(
             DataBuilderFaker::make()->parameters()
                 ->set('name', 'User By Id')
-                ->set('class_name', UserDataBuilder::class)
+                ->set('class_name', \Railken\Amethyst\DataBuilders\CommonDataBuilder::class)
+                ->set('class_arguments', Yaml::dump(\Railken\Amethyst\Managers\UserManager::class))
                 ->set('input', Yaml::dump([
                     'id' => [
                         'type'       => 'integer',
@@ -87,7 +87,7 @@ class ImporterTest extends BaseTest
                 ]))
         )->getResource();
 
-        $response = $this->callAndTest('POST', route('admin.importer.import', ['importer_id' => $importer->id]), ['file_id' => $file->id, 'type' => 'xlsx'], 200);
+        $response = $this->callAndTest('POST', route('admin.importer.execute', ['importer_id' => $importer->id]), ['file_id' => $file->id, 'type' => 'xlsx'], 200);
     }
 
     /**

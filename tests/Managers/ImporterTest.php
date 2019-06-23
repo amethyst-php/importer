@@ -90,7 +90,8 @@ class ImporterTest extends BaseTest
         $dataBuilder = $dbm->createOrFail(
             DataBuilderFaker::make()->parameters()
                 ->set('name', 'User By Id')
-                ->set('class_name', UserDataBuilder::class)
+                ->set('class_name', \Railken\Amethyst\DataBuilders\CommonDataBuilder::class)
+                ->set('class_arguments', Yaml::dump(\Railken\Amethyst\Managers\UserManager::class))
                 ->set('input', Yaml::dump([
                     'id' => [
                         'type'       => 'integer',
