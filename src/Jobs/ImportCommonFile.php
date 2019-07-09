@@ -1,6 +1,6 @@
 <?php
 
-namespace Railken\Amethyst\Jobs;
+namespace Amethyst\Jobs;
 
 use Closure;
 use Illuminate\Bus\Queueable;
@@ -9,8 +9,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use Railken\Amethyst\Exceptions;
-use Railken\Amethyst\Models\Importer;
+use Amethyst\Exceptions;
+use Amethyst\Models\Importer;
 use Railken\Lem\Contracts\AgentContract;
 use Railken\Template\Generators;
 use Symfony\Component\Yaml\Yaml;
@@ -23,7 +23,7 @@ abstract class ImportCommonFile implements ShouldQueue
     use SerializesModels;
 
     /**
-     * @var \Railken\Amethyst\Models\Importer
+     * @var \Amethyst\Models\Importer
      */
     protected $importer;
 
@@ -40,7 +40,7 @@ abstract class ImportCommonFile implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param \Railken\Amethyst\Models\Importer    $importer
+     * @param \Amethyst\Models\Importer    $importer
      * @param string                               $filePath
      * @param \Railken\Lem\Contracts\AgentContract $agent
      */
@@ -99,17 +99,17 @@ abstract class ImportCommonFile implements ShouldQueue
         } catch (Exceptions\ImportFormattingException | \PDOException | \Railken\SQ\Exceptions\QuerySyntaxException | Exceptions\ImportFailedException $e) {
             unlink($this->filePath);
 
-            return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
+            return event(new \Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         } catch (\Twig_Error $e) {
             $e = new \Exception($e->getRawMessage().' on line '.$e->getTemplateLine());
 
             unlink($this->filePath);
 
-            return event(new \Railken\Amethyst\Events\ImportFailed($importer, $e, $this->agent));
+            return event(new \Amethyst\Events\ImportFailed($importer, $e, $this->agent));
         }
 
         unlink($this->filePath);
-        event(new \Railken\Amethyst\Events\ImportSucceeded($importer, $this->agent));
+        event(new \Amethyst\Events\ImportSucceeded($importer, $this->agent));
     }
 
     /**

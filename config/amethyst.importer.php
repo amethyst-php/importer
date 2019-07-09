@@ -13,14 +13,14 @@ return [
         'importer' => [
             'table'      => 'amethyst_importers',
             'comment'    => 'Importer',
-            'model'      => Railken\Amethyst\Models\Importer::class,
-            'schema'     => Railken\Amethyst\Schemas\ImporterSchema::class,
-            'repository' => Railken\Amethyst\Repositories\ImporterRepository::class,
-            'serializer' => Railken\Amethyst\Serializers\ImporterSerializer::class,
-            'validator'  => Railken\Amethyst\Validators\ImporterValidator::class,
-            'authorizer' => Railken\Amethyst\Authorizers\ImporterAuthorizer::class,
-            'faker'      => Railken\Amethyst\Fakers\ImporterFaker::class,
-            'manager'    => Railken\Amethyst\Managers\ImporterManager::class,
+            'model'      => Amethyst\Models\Importer::class,
+            'schema'     => Amethyst\Schemas\ImporterSchema::class,
+            'repository' => Amethyst\Repositories\ImporterRepository::class,
+            'serializer' => Amethyst\Serializers\ImporterSerializer::class,
+            'validator'  => Amethyst\Validators\ImporterValidator::class,
+            'authorizer' => Amethyst\Authorizers\ImporterAuthorizer::class,
+            'faker'      => Amethyst\Fakers\ImporterFaker::class,
+            'manager'    => Amethyst\Managers\ImporterManager::class,
         ],
     ],
 
@@ -36,7 +36,7 @@ return [
         'admin' => [
             'importer' => [
                 'enabled'    => true,
-                'controller' => Railken\Amethyst\Http\Controllers\Admin\ImportersController::class,
+                'controller' => Amethyst\Http\Controllers\Admin\ImportersController::class,
                 'router'     => [
                     'as'     => 'importer.',
                     'prefix' => '/importers',

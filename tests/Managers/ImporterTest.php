@@ -1,16 +1,16 @@
 <?php
 
-namespace Railken\Amethyst\Tests\Managers;
+namespace Amethyst\Tests\Managers;
 
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
-use Railken\Amethyst\Fakers\DataBuilderFaker;
-use Railken\Amethyst\Fakers\ImporterFaker;
-use Railken\Amethyst\Managers\DataBuilderManager;
-use Railken\Amethyst\Managers\FileManager;
-use Railken\Amethyst\Managers\ImporterManager;
-use Railken\Amethyst\Models\User;
-use Railken\Amethyst\Tests\BaseTest;
+use Amethyst\Fakers\DataBuilderFaker;
+use Amethyst\Fakers\ImporterFaker;
+use Amethyst\Managers\DataBuilderManager;
+use Amethyst\Managers\FileManager;
+use Amethyst\Managers\ImporterManager;
+use Amethyst\Models\User;
+use Amethyst\Tests\BaseTest;
 use Railken\Lem\Support\Testing\TestableBaseTrait;
 use Symfony\Component\Yaml\Yaml;
 
@@ -89,8 +89,8 @@ class ImporterTest extends BaseTest
         $dataBuilder = $dbm->createOrFail(
             DataBuilderFaker::make()->parameters()
                 ->set('name', 'User By Id')
-                ->set('class_name', \Railken\Amethyst\DataBuilders\CommonDataBuilder::class)
-                ->set('class_arguments', Yaml::dump(\Railken\Amethyst\Managers\UserManager::class))
+                ->set('class_name', \Amethyst\DataBuilders\CommonDataBuilder::class)
+                ->set('class_arguments', Yaml::dump(\Amethyst\Managers\UserManager::class))
                 ->set('input', Yaml::dump([
                     'id' => [
                         'type'       => 'integer',

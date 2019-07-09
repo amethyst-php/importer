@@ -1,10 +1,10 @@
 <?php
 
-namespace Railken\Amethyst\Events;
+namespace Amethyst\Events;
 
 use Exception;
 use Illuminate\Queue\SerializesModels;
-use Railken\Amethyst\Models\Importer;
+use Amethyst\Models\Importer;
 use Railken\Lem\Contracts\AgentContract;
 
 class ImportFailed
@@ -18,7 +18,7 @@ class ImportFailed
     /**
      * Create a new event instance.
      *
-     * @param \Railken\Amethyst\Models\Importer    $importer
+     * @param \Amethyst\Models\Importer    $importer
      * @param \Exception                           $exception
      * @param \Railken\Lem\Contracts\AgentContract $agent
      */

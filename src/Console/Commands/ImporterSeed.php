@@ -1,11 +1,11 @@
 <?php
 
-namespace Railken\Amethyst\Console\Commands;
+namespace Amethyst\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Railken\Amethyst\Managers\DataBuilderManager;
-use Railken\Amethyst\Managers\ImporterManager;
+use Amethyst\Managers\DataBuilderManager;
+use Amethyst\Managers\ImporterManager;
 use Symfony\Component\Yaml\Yaml;
 
 class ImporterSeed extends Command

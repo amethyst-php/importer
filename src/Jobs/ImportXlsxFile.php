@@ -1,6 +1,6 @@
 <?php
 
-namespace Railken\Amethyst\Jobs;
+namespace Amethyst\Jobs;
 
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\ReaderFactory;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Railken\Amethyst\Jobs;
+namespace Amethyst\Jobs;
 
 use Closure;
 use Illuminate\Contracts\Queue\ShouldQueue;

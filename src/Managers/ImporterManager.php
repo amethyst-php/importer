@@ -1,14 +1,14 @@
 <?php
 
-namespace Railken\Amethyst\Managers;
+namespace Amethyst\Managers;
 
 use Illuminate\Support\Collection;
-use Railken\Amethyst\Common\ConfigurableManager;
-use Railken\Amethyst\Jobs\ImportCsvFile;
-use Railken\Amethyst\Jobs\ImportJsonFile;
-use Railken\Amethyst\Jobs\ImportXlsxFile;
-use Railken\Amethyst\Models\File;
-use Railken\Amethyst\Models\Importer;
+use Amethyst\Common\ConfigurableManager;
+use Amethyst\Jobs\ImportCsvFile;
+use Amethyst\Jobs\ImportJsonFile;
+use Amethyst\Jobs\ImportXlsxFile;
+use Amethyst\Models\File;
+use Amethyst\Models\Importer;
 use Railken\Lem\Manager;
 use Railken\Lem\Result;
 
