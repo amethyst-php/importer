@@ -2,13 +2,13 @@
 
 namespace Amethyst\Managers;
 
-use Illuminate\Support\Collection;
 use Amethyst\Common\ConfigurableManager;
 use Amethyst\Jobs\ImportCsvFile;
 use Amethyst\Jobs\ImportJsonFile;
 use Amethyst\Jobs\ImportXlsxFile;
 use Amethyst\Models\File;
 use Amethyst\Models\Importer;
+use Illuminate\Support\Collection;
 use Railken\Lem\Manager;
 use Railken\Lem\Result;
 

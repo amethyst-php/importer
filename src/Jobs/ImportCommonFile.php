@@ -2,6 +2,8 @@
 
 namespace Amethyst\Jobs;
 
+use Amethyst\Exceptions;
+use Amethyst\Models\Importer;
 use Closure;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,8 +11,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use Amethyst\Exceptions;
-use Amethyst\Models\Importer;
 use Railken\Lem\Contracts\AgentContract;
 use Railken\Template\Generators;
 use Symfony\Component\Yaml\Yaml;
@@ -40,7 +40,7 @@ abstract class ImportCommonFile implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param \Amethyst\Models\Importer    $importer
+     * @param \Amethyst\Models\Importer            $importer
      * @param string                               $filePath
      * @param \Railken\Lem\Contracts\AgentContract $agent
      */

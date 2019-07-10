@@ -2,11 +2,11 @@
 
 namespace Amethyst\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Amethyst\Api\Http\Controllers\RestManagerController;
 use Amethyst\Api\Http\Controllers\Traits as RestTraits;
 use Amethyst\Managers\FileManager;
 use Amethyst\Managers\ImporterManager;
+use Illuminate\Http\Request;
 
 class ImportersController extends RestManagerController
 {

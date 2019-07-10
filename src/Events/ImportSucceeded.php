@@ -2,8 +2,8 @@
 
 namespace Amethyst\Events;
 
-use Illuminate\Queue\SerializesModels;
 use Amethyst\Models\Importer;
+use Illuminate\Queue\SerializesModels;
 use Railken\Lem\Contracts\AgentContract;
 
 class ImportSucceeded
@@ -16,7 +16,7 @@ class ImportSucceeded
     /**
      * Create a new event instance.
      *
-     * @param \Amethyst\Models\Importer    $importer
+     * @param \Amethyst\Models\Importer            $importer
      * @param \Railken\Lem\Contracts\AgentContract $agent
      */
     public function __construct(Importer $importer, AgentContract $agent = null)

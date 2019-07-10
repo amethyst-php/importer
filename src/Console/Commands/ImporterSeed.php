@@ -2,10 +2,10 @@
 
 namespace Amethyst\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Amethyst\Managers\DataBuilderManager;
 use Amethyst\Managers\ImporterManager;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Symfony\Component\Yaml\Yaml;
 
 class ImporterSeed extends Command

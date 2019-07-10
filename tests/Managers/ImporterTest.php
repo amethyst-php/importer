@@ -2,8 +2,6 @@
 
 namespace Amethyst\Tests\Managers;
 
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
 use Amethyst\Fakers\DataBuilderFaker;
 use Amethyst\Fakers\ImporterFaker;
 use Amethyst\Managers\DataBuilderManager;
@@ -11,6 +9,8 @@ use Amethyst\Managers\FileManager;
 use Amethyst\Managers\ImporterManager;
 use Amethyst\Models\User;
 use Amethyst\Tests\BaseTest;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\WriterFactory;
 use Railken\Lem\Support\Testing\TestableBaseTrait;
 use Symfony\Component\Yaml\Yaml;
 

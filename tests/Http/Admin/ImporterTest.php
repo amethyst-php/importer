@@ -2,15 +2,15 @@
 
 namespace Amethyst\Tests\Http\Admin;
 
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Illuminate\Http\UploadedFile;
 use Amethyst\Api\Support\Testing\TestableBaseTrait;
 use Amethyst\Fakers\DataBuilderFaker;
 use Amethyst\Fakers\ImporterFaker;
 use Amethyst\Managers\DataBuilderManager;
 use Amethyst\Managers\ImporterManager;
 use Amethyst\Tests\BaseTest;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\WriterFactory;
+use Illuminate\Http\UploadedFile;
 use Symfony\Component\Yaml\Yaml;
 
 class ImporterTest extends BaseTest
