@@ -13,12 +13,12 @@ use Railken\Lem\Manager;
 use Railken\Lem\Result;
 
 /**
- * @method \Amethyst\Models\Importer newEntity()
- * @method \Amethyst\Schemas\ImporterSchema getSchema()
+ * @method \Amethyst\Models\Importer                 newEntity()
+ * @method \Amethyst\Schemas\ImporterSchema          getSchema()
  * @method \Amethyst\Repositories\ImporterRepository getRepository()
- * @method \Amethyst\Serializers\ImporterSerializer getSerializer()
- * @method \Amethyst\Validators\ImporterValidator getValidator()
- * @method \Amethyst\Authorizers\ImporterAuthorizer getAuthorizer()
+ * @method \Amethyst\Serializers\ImporterSerializer  getSerializer()
+ * @method \Amethyst\Validators\ImporterValidator    getValidator()
+ * @method \Amethyst\Authorizers\ImporterAuthorizer  getAuthorizer()
  */
 class ImporterManager extends Manager
 {
