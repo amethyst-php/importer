@@ -14,7 +14,7 @@ class CreateImportersTable extends Migration
     {
         Schema::create(Config::get('amethyst.importer.data.importer.table'), function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name')->index();
             $table->text('description')->nullable();
             $table->integer('data_builder_id')->unsigned()->nullable();
             $table->foreign('data_builder_id')->references('id')->on(Config::get('amethyst.data-builder.data.data-builder.table'));
