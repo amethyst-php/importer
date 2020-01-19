@@ -2,7 +2,7 @@
 
 namespace Amethyst\Managers;
 
-use Amethyst\Common\ConfigurableManager;
+use Amethyst\Core\ConfigurableManager;
 use Amethyst\Jobs\ImportCsvFile;
 use Amethyst\Jobs\ImportJsonFile;
 use Amethyst\Jobs\ImportXlsxFile;
