@@ -1,6 +1,6 @@
 # amethyst-importer
 
-[![Build Status](https://travis-ci.org/amethyst-php/importer.svg?branch=master)](https://travis-ci.org/amethyst-php/importer)
+[![Action Status](https://github.com/amethyst-php/importer/workflows/test/badge.svg)](https://github.com/amethyst-php/importer/actions)
 
 [Amethyst](https://github.com/amethyst-php/amethyst) package.
 
